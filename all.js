@@ -132,7 +132,9 @@ const isDataValid = (data) =>{
 // 監聽地區選單
 resultSort.addEventListener('change', (e) =>{
   const targetArea = e.target.value;
-  if(targetArea === '全部地區'){
+  if (targetArea === '地區搜尋') {
+    return
+  } else if(targetArea === '全部地區') {
     renderData(originData);
     renderResultCount(originData);
   } else {
