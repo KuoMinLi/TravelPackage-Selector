@@ -48,34 +48,43 @@ const group =document.querySelector('#group');
 // 渲染畫面
 const renderData = (data) =>{
   let str = "";
-  data.forEach(item=>{
-    str += 
-    `<div class="px-1 w-full md:w-1/2 md:px-2 lg:w-1/3 lg:px-4  ">
-          <div class="rounded border-solid shadow-md mb-9 ">
-            <div class="relative">
-              <a class="block overflow-hidden h-48 object-cover" href="#" alt="">
-                <img class=" duration-300 hover:scale-110 " src="${item.imgUrl}" alt="${item.name}">
-              </a>
-              <div class="absolute -top-3 px-5 py-2 bg-[#64C3BF] rounded-md">${item.area}</div>
-              <div class="absolute -bottom-4 px-5 py-2 bg-primary rounded-md">${item.rate}</div>
-            </div>
-            <div class="mt-5 px-5">
-              <h3 class="pb-1 text-2xl text-primary font-bold border-transparent border-b-primary border-2 mb-4">${item.name}</h3>
-              <p class="text-secondary mb-8">${item.description}</p>
-              <div class="flex justify-between items-center pb-4">
-                <p class="text-primary font-bold">
-                  <span class="mr-1.5"><i class="fas fa-exclamation-circle"></i></span>
-                  剩下最後 ${item.group} 組</p>
-                <p class="text-primary font-bold flex items-center "> 
-                  <span class="mr-1">TWD</span>
-                  <span class="text-3xl">$${item.price}</span>
-                </p>
+  if ( data.length === 0) {
+    str += `<div>
+              <h3 class="text-3xl text-primary font-bold text-center pb-10">查無此關鍵字資料</h3>
+              <img class="max-h-[400px]" src="https://github.com/hexschool/2022-web-layout-training/blob/main/js_week5/no_found.png?raw=true" alt="">
+            </div>`
+  } else {
+
+    data.forEach(item=>{
+      str += 
+      `<div class="px-1 w-full md:w-1/2 md:px-2 lg:w-1/3 lg:px-4  ">
+            <div class="rounded border-solid shadow-md mb-9 ">
+              <div class="relative">
+                <a class="block overflow-hidden h-48 object-cover" href="#" alt="">
+                  <img class=" duration-300 hover:scale-110 " src="${item.imgUrl}" alt="${item.name}">
+                </a>
+                <div class="absolute -top-3 px-5 py-2 bg-[#64C3BF] rounded-md">${item.area}</div>
+                <div class="absolute -bottom-4 px-5 py-2 bg-primary rounded-md">${item.rate}</div>
+              </div>
+              <div class="mt-5 px-5">
+                <h3 class="pb-1 text-2xl text-primary font-bold border-transparent border-b-primary border-2 mb-4">${item.name}</h3>
+                <p class="text-secondary mb-8">${item.description}</p>
+                <div class="flex justify-between items-center pb-4">
+                  <p class="text-primary font-bold">
+                    <span class="mr-1.5"><i class="fas fa-exclamation-circle"></i></span>
+                    剩下最後 ${item.group} 組</p>
+                  <p class="text-primary font-bold flex items-center "> 
+                    <span class="mr-1">TWD</span>
+                    <span class="text-3xl">$${item.price}</span>
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        </div>`
-  })
+          </div>`
+    })
+  }
   cardList.innerHTML = str;
+  
 }
 
 // 渲染總共資料個數
@@ -89,6 +98,7 @@ const renderResultCount = (data) =>{
 const addData = (e) =>{
   e.preventDefault();
   let newdata = {
+    id: Date.now(),
     name: name.value,
     area: area.value,
     imgUrl: imgUrl.value,
