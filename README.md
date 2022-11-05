@@ -1,4 +1,4 @@
-# week5-Selector
+# TravelPackage-Selector
 
 ## 使用 TailwindCSS+Vanilla JS+sweetalert2 進行撰寫
 ![image](https://user-images.githubusercontent.com/100744871/198951332-263181e6-d652-45cf-8d30-f5ee7c914886.png)
