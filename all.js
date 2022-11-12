@@ -64,6 +64,7 @@ const description = document.querySelector('#description');
 const price = document.querySelector('#price');
 const rate = document.querySelector('#rate');
 const group =document.querySelector('#group');
+const inputForm = document.querySelector('#input-form');
 
 // 渲染畫面
 const renderData = (data) =>{
@@ -142,13 +143,15 @@ const isDataValid = (data) =>{
     originData.push(data);
     renderData(originData);
     renderResultCount(originData);
-    name.value = '';
-    area.value = '請選擇景點地區';
-    imgUrl.value = '';
-    description.value = '';
-    price.value = '';
-    rate.value = '';
-    group.value = '';
+    // name.value = '';
+    // area.value = '請選擇景點地區';
+    // imgUrl.value = '';
+    // description.value = '';
+    // price.value = '';
+    // rate.value = '';
+    // group.value = '';
+    inputForm.reset();
+    // input.reset();
     Swal.fire({
       position: 'top-end',
       icon: 'success',
@@ -162,9 +165,7 @@ const isDataValid = (data) =>{
 // 監聽地區選單
 resultSort.addEventListener('change', (e) =>{
   const targetArea = e.target.value;
-  if (targetArea === '地區搜尋') {
-    return
-  } else if(targetArea === '全部地區') {
+ if (targetArea === '全部地區') {
     renderData(originData);
     renderResultCount(originData);
   } else {

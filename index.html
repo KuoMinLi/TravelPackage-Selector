@@ -34,7 +34,7 @@
         <img class="hidden md:block"
           src="https://github.com/hexschool/2022-web-layout-training/blob/main/js_week5/logo.png?raw=true" alt="">
       </div>
-      <div class="md:w-1/2">
+      <form id="input-form" class="md:w-1/2">
         <h2 class="text-primary mb-8 pb-1 text-2xl font-bold border-transparent border-b-primary border-2"><i
             class="fas fa-plus-circle"></i>新增旅遊套票</h2>
         <div class="mb-4 sm:flex items-center justify-between">
@@ -89,14 +89,14 @@
           <button
             class="px-10 py-2.5 bg-primary text-white text-lg rounded mx-auto hover:bg-[#64C3BF] duration-300 " id="btn">新增套票</button>
         </div>
-      </div>
+      </form>
     </div>
   </div>
   <div class="bg-[#F7F7F7] pb-28 flex flex-col items-center">
     <div class="mx-auto pt-16 px-6 md:px-10">
       <div class="px-6 w-2/3 mx-auto  mb-8">
         <select class=" w-full border py-2 pl-3 text-secondary mb-2 " name="result-sort" id="result-sort">
-          <option class="">地區搜尋</option>
+          <option disabled="disabled" >地區搜尋</option>
           <option value="全部地區">全部地區</option>
           <option value="台北">台北</option>
           <option value="台中">台中</option>
