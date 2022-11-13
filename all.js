@@ -1,4 +1,3 @@
-
 let originData = [];
 // [
 //   {
@@ -33,52 +32,89 @@ let originData = [];
 //   }
 // ];
 
-// 取得 api 資料  
-axios.get('https://raw.githubusercontent.com/hexschool/js-training/main/travelApi.json')
+// 取得 api 資料
+axios
+  .get(
+    "https://raw.githubusercontent.com/hexschool/js-training/main/travelApi.json"
+  )
   .then((response) => {
     // handle success
     originData = response.data.data;
     renderData(originData);
     renderResultCount(originData);
+    renderC3(originData);
   })
   .catch((error) => {
     // handle error
     console.log(error);
     Swal.fire({
-      position: 'top-end',
-      icon: 'error',
-      title: '資料讀取失敗',
+      position: "top-end",
+      icon: "error",
+      title: "資料讀取失敗",
       showConfirmButton: false,
-      timer: 1500
-    })
-  })
+      timer: 1500,
+    });
+  });
 
-const cardList = document.querySelector('#card-list');
-const resultCount = document.querySelector('#result-count');
-const resultSort = document.querySelector('#result-sort'); 
-const btn = document.querySelector('#btn');
-const name = document.querySelector('#name');
-const area = document.querySelector('#area');
-const imgUrl = document.querySelector('#imgUrl');
-const description = document.querySelector('#description');
-const price = document.querySelector('#price');
-const rate = document.querySelector('#rate');
-const group =document.querySelector('#group');
-const inputForm = document.querySelector('#input-form');
+const cardList = document.querySelector("#card-list");
+const resultCount = document.querySelector("#result-count");
+const resultSort = document.querySelector("#result-sort");
+const btn = document.querySelector("#btn");
+const name = document.querySelector("#name");
+const area = document.querySelector("#area");
+const imgUrl = document.querySelector("#imgUrl");
+const description = document.querySelector("#description");
+const price = document.querySelector("#price");
+const rate = document.querySelector("#rate");
+const group = document.querySelector("#group");
+const inputForm = document.querySelector("#input-form");
+const inputAll = document.querySelectorAll("input");
+
+const renderC3 = (data) => {
+  let newData = [];
+  data.forEach((item) => {
+    if (newData[item.area] == undefined) {
+      newData[item.area] = 1;
+    } else {
+      newData[item.area] += 1;
+    }
+  });
+
+  let areaData = [];
+  Object.keys(newData).forEach((item) => {
+    areaData.push([item, newData[item]]);
+  });
+
+  let chart = c3.generate({
+    bindto: "#chart", // HTML 元素綁定
+    data: {
+      columns: areaData, // 資料存放
+      type: "donut", // 圖表種類
+      colors: {
+        高雄: "#E68618",
+        台中: "#5151D3",
+        台北: "#26BFC7",
+      },
+    },
+    donut: {
+      title: "套票地區比重",
+      
+    },
+    
+  });
+};
 
 // 渲染畫面
-const renderData = (data) =>{
+const renderData = (data) => {
   let str = "";
-  if ( data.length === 0) {
+  if (data.length === 0) {
     str += `<div>
               <h3 class="text-3xl text-primary font-bold text-center pb-10">查無此關鍵字資料</h3>
               <img class="max-h-[400px]" src="https://github.com/hexschool/2022-web-layout-training/blob/main/js_week5/no_found.png?raw=true" alt="">
-            </div>`
+            </div>`;
   } else {
-
-    data.forEach(item=>{
-      str += 
-      `<div class="px-1 w-full md:w-1/2 md:px-2 lg:w-1/3 lg:px-4  ">
+    data.forEach((item) => {
+      str += `<div class="px-1 w-full md:w-1/2 md:px-2 lg:w-1/3 lg:px-4  ">
             <div class="rounded border-solid shadow-md mb-9 ">
               <div class="relative">
                 <a class="block overflow-hidden h-48 object-cover" href="#" alt="">
@@ -101,22 +137,21 @@ const renderData = (data) =>{
                 </div>
               </div>
             </div>
-          </div>`
-    })
+          </div>`;
+    });
   }
   cardList.innerHTML = str;
-  
-}
+};
 
 // 渲染總共資料個數
-const renderResultCount = (data) =>{
+const renderResultCount = (data) => {
   let str = "";
-  str += `<p class="text-secondary">本次搜尋共 ${data.length} 筆資料</p>`
+  str += `<p class="text-secondary">本次搜尋共 ${data.length} 筆資料</p>`;
   resultCount.innerHTML = str;
-}
+};
 
 // 新增資料
-const addData = (e) =>{
+const addData = (e) => {
   e.preventDefault();
   let newdata = {
     id: Date.now(),
@@ -126,57 +161,96 @@ const addData = (e) =>{
     description: description.value,
     price: price.value,
     rate: rate.value,
-    group: group.value
-  }
+    group: group.value,
+  };
   isDataValid(newdata);
-}
+};
 
 // 檢查資料是否正確
-const isDataValid = (data) =>{
-  if (data.name === '' || data.area=== '請選擇景點地區' || data.imgUrl=== '' ||
-  data.description === '' || data.price === '' || data.rate === '' || data.group === '') {
+const isDataValid = (data) => {
+  if (
+    data.name === "" ||
+    data.area === "請選擇景點地區" ||
+    data.imgUrl === "" ||
+    data.description === "" ||
+    data.price === "" ||
+    data.rate === "" ||
+    data.group === ""
+  ) {
     Swal.fire({
-      icon: 'error',
-      title: '請輸入完整資料',
-    })
+      icon: "error",
+      title: "請輸入完整資料",
+    });
+
+    isDone();
   } else {
     originData.push(data);
     renderData(originData);
     renderResultCount(originData);
-    // name.value = '';
-    // area.value = '請選擇景點地區';
-    // imgUrl.value = '';
-    // description.value = '';
-    // price.value = '';
-    // rate.value = '';
-    // group.value = '';
+    renderC3(originData);
     inputForm.reset();
-    // input.reset();
     Swal.fire({
-      position: 'top-end',
-      icon: 'success',
-      title: '票券已新增',
+      position: "top-end",
+      icon: "success",
+      title: "票券已新增",
       showConfirmButton: false,
-      timer: 1500
-    })
+      timer: 1500,
+    });
   }
-}
+};
 
 // 監聽地區選單
-resultSort.addEventListener('change', (e) =>{
+resultSort.addEventListener("change", (e) => {
   const targetArea = e.target.value;
- if (targetArea === '全部地區') {
+  if (targetArea === "全部地區") {
     renderData(originData);
     renderResultCount(originData);
   } else {
-    let newData  = [...originData].filter(item => item.area === targetArea);
+    let newData = [...originData].filter((item) => item.area === targetArea);
     renderData(newData);
     renderResultCount(newData);
   }
-})
+});
 
 // 監聽新增票券
-btn.addEventListener('click', addData);
+btn.addEventListener("click", addData);
 
-// 初始渲染畫面
+// 確認內容是否填寫
+const isDone = () => {
+  inputAll.forEach((item) => {
+    if (item.value == "") {
+      item.focus();
+      return;
+    }
+  });
+  if (description.value == "") {
+    description.focus();
+  }
+  if (area.value == "請選擇景點地區") {
+    area.focus();
+  }
+};
 
+// 監聽輸入框
+inputAll.forEach((item) => {
+  item.addEventListener("blur", (e) => {
+    isWrite(e);
+  });
+});
+description.addEventListener("blur", (e) => {
+  isWrite(e);
+});
+area.addEventListener("blur", (e) => {
+  isWrite(e);
+});
+
+// 判斷是否有輸入內容
+const isWrite = (e) => {
+  if (e.target.value == "") {
+    e.target.classList.add("border-red-500");
+    e.target.classList.remove("border-b-primary");
+  } else if (e.target.classList.contains("border-red-500")) {
+    e.target.classList.remove("border-red-500");
+    e.target.classList.add("border-b-primary");
+  }
+};
