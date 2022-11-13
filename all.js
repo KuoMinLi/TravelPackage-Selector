@@ -98,9 +98,7 @@ const renderC3 = (data) => {
     },
     donut: {
       title: "套票地區比重",
-      
     },
-    
   });
 };
 
